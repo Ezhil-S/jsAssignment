@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div id="pie_chart1"> </div>
+<div id="pie_chart2"> </div>
+<div id="pie_chart3"> </div>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+var width = 850;
+var height = 350;
+var radius = 300/ 2;
+var color = d3.scale.ordinal().range(["#008484","#48CECE","#6AFFFF"]);
+var svg1 = d3.select('#pie_chart1')
+.append('svg')
+.attr('width', width)
+.attr('height', height)
+.append('g')
+.attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+var svg2 = d3.select('#pie_chart2')
+.append('svg')
+.attr('width', width)
+.attr('height', height)
+.append('g')
+.attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+var svg3 = d3.select('#pie_chart3')
+.append('svg')
+.attr('width', width)
+.attr('height', height)
+.append('g')
+.attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
+var total1=0;
+d3.json("in.json", function(error, data) {
+  var pie_dataN=[];
+  var pie_dataC=[];
+  var pie_dataS=[];
+var a1=0;
+for(var a=0;a<data.length;a++){
+  if(data[a].countries=="North Europe")
+  {
+  total1=parseFloat(data[a].fat_100g)+parseFloat(data[a].carbohydrates_100g)+parseFloat(data[a].proteins_100g);
+        pie_dataN[0]=((data[a].fat_100g)/total1)*100;
+    pie_dataN[1]=((data[a].carbohydrates_100g)/total1)*100;
+    pie_dataN[2]=((data[a].proteins_100g)/total1)*100;
+        }
+total1=0;
+if(data[a].countries=="Central Europe")
+{
+total1=parseFloat(data[a].fat_100g)+parseFloat(data[a].carbohydrates_100g)+parseFloat(data[a].proteins_100g);
+      pie_dataC[0]=((data[a].fat_100g)/total1)*100;
+  pie_dataC[1]=((data[a].carbohydrates_100g)/total1)*100;
+  pie_dataC[2]=((data[a].proteins_100g)/total1)*100;
+      }
+total1=0;
+if(data[a].countries=="South Europe")
+{
+total1=parseFloat(data[a].fat_100g)+parseFloat(data[a].carbohydrates_100g)+parseFloat(data[a].proteins_100g);
+      pie_dataS[0]=((data[a].fat_100g)/total1)*100;
+  pie_dataS[1]=((data[a].carbohydrates_100g)/total1)*100;
+  pie_dataS[2]=((data[a].proteins_100g)/total1)*100;
+      }
+total1=0;
+  }
+
+var arc = d3.svg.arc().outerRadius(radius);
+
+var pie1 = d3.layout.pie()
+.value(function(d,i) { return pie_dataN[i]; })
+.sort(null);
+
+var path = svg1.selectAll('path')
+.data(pie1(data))
+.enter()
+.append('path')
+.attr('d', arc)
+.attr('fill', function(d,i) {
+  return color(i);
+});
+
+
+arc = d3.svg.arc().outerRadius(radius);
+
+var pie2 = d3.layout.pie()
+.value(function(d,i) { return pie_dataC[i]; })
+.sort(null);
+
+var path = svg2.selectAll('path')
+.data(pie2(data))
+.enter()
+.append('path')
+.attr('d', arc)
+.attr('fill', function(d,i) {
+  return color(i);
+});
+arc = d3.svg.arc().outerRadius(radius);
+
+var pie3 = d3.layout.pie()
+.value(function(d,i) { return pie_dataS[i]; })
+.sort(null);
+
+var path = svg3.selectAll('path')
+.data(pie3(data))
+.enter()
+.append('path')
+.attr('d', arc)
+.attr('fill', function(d,i) {
+  return color(i);
+});
+svg1.append("rect")
+.attr("fill","#008484")
+.attr("width",50)
+.attr("height",20)
+.attr("x",200)
+.attr("y",10);
+svg1.append("text")
+.attr("x",260)
+.attr("y",25)
+.text("fat");
+
+svg1.append("rect")
+.attr("fill","#48CECE")
+.attr("width",50)
+.attr("height",20)
+.attr("x",200)
+.attr("y",40);
+svg1.append("text")
+.attr("x",260)
+.attr("y",55)
+.text("carbohydrates");
+
+svg1.append("rect")
+.attr("fill","#6AFFFF")
+.attr("width",50)
+.attr("height",20)
+.attr("x",200)
+.attr("y",70);
+svg1.append("text")
+.attr("x",260)
+.attr("y",85)
+.text("proteins");
+svg1.append("text")
+.attr("x",230)
+.attr("y",0)
+.text("North Europe");
+
+svg2.append("rect")
+.attr("fill","#008484")
+.attr("width",50)
+.attr("height",20)
+.attr("x",200)
+.attr("y",10);
+svg2.append("text")
+.attr("x",260)
+.attr("y",25)
+.text("fat");
+
+svg2.append("rect")
+.attr("fill","#48CECE")
+.attr("width",50)
+.attr("height",20)
+.attr("x",200)
+.attr("y",40);
+svg2.append("text")
+.attr("x",260)
+.attr("y",55)
+.text("carbohydrates");
+
+svg2.append("rect")
+.attr("fill","#6AFFFF")
+.attr("width",50)
+.attr("height",20)
+.attr("x",200)
+.attr("y",70);
+svg2.append("text")
+.attr("x",260)
+.attr("y",85)
+.text("proteins");
+svg2.append("text")
+.attr("x",230)
+.attr("y",0)
+.text("Central Europe");
+
+svg3.append("rect")
+.attr("fill","#008484")
+.attr("width",50)
+.attr("height",20)
+.attr("x",200)
+.attr("y",10);
+svg3.append("text")
+.attr("x",260)
+.attr("y",25)
+.text("fat");
+
+svg3.append("rect")
+.attr("fill","#48CECE")
+.attr("width",50)
+.attr("height",20)
+.attr("x",200)
+.attr("y",40);
+svg3.append("text")
+.attr("x",260)
+.attr("y",55)
+.text("carbohydrates");
+
+svg3.append("rect")
+.attr("fill","#6AFFFF")
+.attr("width",50)
+.attr("height",20)
+.attr("x",200)
+.attr("y",70);
+svg3.append("text")
+.attr("x",260)
+.attr("y",85)
+.text("proteins");
+svg3.append("text")
+.attr("x",230)
+.attr("y",0)
+.text("South Europe");
+});
+
+
+</script>
+</body>
+</html>
